@@ -1,0 +1,38 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type OrderDetails {
+  food: String!
+  foodCount: Int!
+}
+
+type Order {
+  _id: String!
+  orderDetails: OrderDetails!
+  date: DateTime!
+  userId: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  _id: String!
+  username: String!
+  password: String!
+  fullName: String!
+  orders: Order!
+  role: Role!
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+type Query {
+  getUser(userId: String!): User!
+}
