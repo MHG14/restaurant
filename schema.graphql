@@ -33,6 +33,37 @@ enum Role {
   ADMIN
 }
 
+type Food {
+  foodName: String!
+  foodInventory: Int!
+}
+
 type Query {
   getUser(userId: String!): User!
+  seeAllFoods: [Food!]!
+  seeFoodByName(foodName: String!): Food!
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
+  deleteUser(id: String!): User!
+  addFood(addFoodInput: AddFoodInput!): Food!
+}
+
+input CreateUserInput {
+  username: String!
+  password: String!
+  fullName: String!
+}
+
+input UpdateUserInput {
+  username: String
+  password: String
+  fullName: String
+}
+
+input AddFoodInput {
+  foodName: String!
+  foodInventory: Int!
 }

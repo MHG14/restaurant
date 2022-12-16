@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { OrderModule } from './order/order.module';
 import { FoodModule } from './food/food.module';
 import { AuthModule } from './auth/auth.module';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
