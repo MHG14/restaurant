@@ -22,7 +22,7 @@ export class User {
   @Field(() => String)
   _id: mongoose.Schema.Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   @Field(() => String)
   username: string;
 
@@ -41,6 +41,10 @@ export class User {
   @Prop({ required: true, enum: ['USER', 'ADMIN'], default: 'USER' })
   @Field(() => Role)
   role: string;
+
+  @Prop()
+  @Field(() => String)
+  hashedRt: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

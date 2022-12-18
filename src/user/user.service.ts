@@ -8,7 +8,7 @@ import { User } from './schemas/user.schema';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+  constructor(@InjectModel('User') private userModel: Model<User>) {}
   async getUser(getUserArgs: GetUserArgs): Promise<User> {
     return await this.userModel.findOne({ _id: getUserArgs.userId });
   }

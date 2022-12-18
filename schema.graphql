@@ -26,6 +26,7 @@ type User {
   fullName: String!
   orders: Order!
   role: Role!
+  hashedRt: String!
 }
 
 enum Role {
@@ -36,6 +37,11 @@ enum Role {
 type Food {
   foodName: String!
   foodInventory: Int!
+}
+
+type Tokens {
+  accessToken: String!
+  refreshToken: String!
 }
 
 type Query {
@@ -49,6 +55,8 @@ type Mutation {
   updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
   deleteUser(id: String!): User!
   addFood(addFoodInput: AddFoodInput!): Food!
+  register(registerInput: RegisterInput!): Tokens!
+  login(loginInput: LoginInput!): Tokens!
 }
 
 input CreateUserInput {
@@ -66,4 +74,15 @@ input UpdateUserInput {
 input AddFoodInput {
   foodName: String!
   foodInventory: Int!
+}
+
+input RegisterInput {
+  username: String!
+  password: String!
+  fullName: String!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
 }
