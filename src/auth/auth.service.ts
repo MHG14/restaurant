@@ -8,6 +8,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/user/schemas/user.schema';
 import { LoginInput } from './dto/inputs/login.input';
+import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +30,7 @@ export class AuthService {
         { secret: 'at-secret', expiresIn: 15 * 60 },
       ),
       this.jwtService.signAsync(
-        { sub: username},
+        { sub: username },
         { secret: 'rt-secret', expiresIn: 60 * 60 * 24 * 7 },
       ),
     ]);
@@ -56,25 +57,34 @@ export class AuthService {
       fullName: registerInput.fullName,
     });
 
-    const tokens = await this.getTokens(
-      registerInput.username,
-    );
+    const tokens = await this.getTokens(registerInput.username);
 
     await this.updateHashedRt(newUser.username, tokens.refreshToken);
     return tokens;
   }
 
   async login(loginInput: LoginInput): Promise<Tokens> {
-    const user = await this.userModel.findOne({username: loginInput.username})
-    if(!user) throw new ForbiddenException('User does not exist');
-    const passwordMatches = await bcrypt.compare(loginInput.password, user.password)
-    if(!passwordMatches) throw new ForbiddenException('Password is not correct');
-    const tokens = await this.getTokens(
-        loginInput.username,
-      );
-  
-      await this.updateHashedRt(user.username, tokens.refreshToken);
-      return tokens;
+    const user = await this.userModel.findOne({
+      username: loginInput.username,
+    });
+    if (!user) throw new ForbiddenException('User does not exist');
+    const passwordMatches = await bcrypt.compare(
+      loginInput.password,
+      user.password,
+    );
+    if (!passwordMatches)
+      throw new ForbiddenException('Password is not correct');
+    const tokens = await this.getTokens(loginInput.username);
 
+    await this.updateHashedRt(user.username, tokens.refreshToken);
+    return tokens;
+  }
+
+  async logout(username: string): Promise<String> {
+    await this.userModel.updateOne(
+      { username: username, hashedRt: { $ne: null } },
+      { $set: { hashedRt: null } },
+    );
+    return `${username} successfully logged out`;
   }
 }

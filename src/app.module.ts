@@ -13,6 +13,7 @@ import { UserService } from './user/user.service';
   imports: [
     MongooseModule.forRoot('mongodb://localhost/restaurant'),
     GraphQLModule.forRoot<ApolloDriverConfig>({
+
       driver: ApolloDriver,
       autoSchemaFile: './schema.graphql',
       playground: true,

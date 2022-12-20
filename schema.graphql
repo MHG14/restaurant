@@ -57,6 +57,7 @@ type Mutation {
   addFood(addFoodInput: AddFoodInput!): Food!
   register(registerInput: RegisterInput!): Tokens!
   login(loginInput: LoginInput!): Tokens!
+  logout: String!
 }
 
 input CreateUserInput {
