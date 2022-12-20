@@ -8,15 +8,18 @@ import { OrderModule } from './order/order.module';
 import { FoodModule } from './food/food.module';
 import { AuthModule } from './auth/auth.module';
 import { UserService } from './user/user.service';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/restaurant'),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-
       driver: ApolloDriver,
       autoSchemaFile: './schema.graphql',
       playground: true,
+    }),
+    ConfigModule.forRoot({
+      isGlobal: true,
     }),
     UserModule,
     OrderModule,

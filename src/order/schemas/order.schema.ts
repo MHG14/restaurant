@@ -16,13 +16,13 @@ export class Order {
   @Field(() => OrderDetails)
   orderDetails: OrderDetails[];
 
-  @Prop({ required: true })
+  @Prop({ required: true , default: Date.now()})
   @Field(() => GraphQLISODateTime)
   date: mongoose.Schema.Types.Date;
 
-  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  @Prop({ required: true, type: String, ref: 'User' })
   @Field(() => User)
-  userId: User;
+  username: User;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

@@ -11,7 +11,7 @@ type Order {
   _id: String!
   orderDetails: OrderDetails!
   date: DateTime!
-  userId: User!
+  username: User!
 }
 
 """
@@ -54,10 +54,12 @@ type Mutation {
   createUser(createUserInput: CreateUserInput!): User!
   updateUser(id: String!, updateUserInput: UpdateUserInput!): User!
   deleteUser(id: String!): User!
+  orderFood(orderDetails: OrderDetailsInput!): Food!
   addFood(addFoodInput: AddFoodInput!): Food!
   register(registerInput: RegisterInput!): Tokens!
   login(loginInput: LoginInput!): Tokens!
   logout: String!
+  refresh: Tokens!
 }
 
 input CreateUserInput {
@@ -70,6 +72,11 @@ input UpdateUserInput {
   username: String
   password: String
   fullName: String
+}
+
+input OrderDetailsInput {
+  food: String!
+  foodCount: Int!
 }
 
 input AddFoodInput {

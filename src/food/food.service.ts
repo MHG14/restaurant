@@ -25,4 +25,6 @@ export class FoodService {
   async addFood(addFoodInput: AddFoodInput): Promise<Food> {
     return this.foodModel.create(addFoodInput);
   }
+
+  
 }

@@ -17,10 +17,14 @@ import { RegisterInput } from './dto/inputs/register.input';
 // import { AuthPayload } from './types/auth-payload';
 import { Tokens } from './types/tokens-type';
 import * as kir from 'apollo-server-express';
+import { ConfigService } from '@nestjs/config';
 
 @Resolver(() => Tokens)
 export class AuthResolver {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private configService: ConfigService,
+  ) {}
 
   @HttpCode(HttpStatus.CREATED)
   @Mutation(() => Tokens)
@@ -40,14 +44,16 @@ export class AuthResolver {
   @UseGuards(AtGuard)
   @Mutation(() => String)
   async logout(@GetCurrentUser('sub') username: string): Promise<String> {
-    console.log(username)
     return await this.authService.logout(username);
   }
 
-  // @HttpCode(HttpStatus.OK)
-  // @UseGuards(AuthGuard('jwt-refresh'))
-  // @Mutation(() => String)
-  // async refresh(@Args('username') username: string): Promise<String> {
-  //   return await this.authService.logout(username);
-  // }
+  @HttpCode(HttpStatus.OK)
+  @UseGuards(RtGuard)
+  @Mutation(() => Tokens)
+  async refresh(
+    @GetCurrentUser('sub') username: string,
+    @GetCurrentUser('refreshToken') refreshToken: string,
+  ): Promise<Tokens> {
+    return await this.authService.refreshTokens(username, refreshToken);
+  }
 }
